@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Storage</title>
+</head>
+<body>
+<p th:text="${storage.getId() + ', ' + storage.getSize() + ', ' + storage.getRow() + ', ' + storage.getNumber}">VALUE</p>
+</br>
+
+
+<div th:if="${owner}">
+    <span>Reserved by: </span> <span th:text="${owner.getFullName() + ' at ' + storage.getTakenAt()}">Customer</span>
+
+    <form th:method="PATCH" th:action="@{/storages/{id}/release(id=${storage.getId()})}">
+        <input type="submit" value="Release"/>
+    </form>
+</div>
+
+<div th:if="${customers}">
+    <span>Storage free. Assign new client</span>
+    <form th:method="PATCH" th:action="@{/storages/{id}/assign(id=${storage.getId()})}">
+        <label for="customer">Choose client</label>
+
+
+        <select th:object="${customer}" th:field="*{id}" id="customer">
+            <option th:each="customer : ${customers}" th:value="${customer.getId()}" th:text="${customer.getFullName()}">
+            </option>
+        </select>
+
+        <input type="submit" value="Assign"/>
+    </form>
+</div>
+
+<hr/>
+
+<form th:method="GET" th:action="@{/storages/{id}/edit(id=${storage.getId()})}" th:object="${storage}">
+    <input type="submit" value="Update">
+</form>
+</br>
+<form th:method="DELETE" th:action="@{/storages/{id}(id=${storage.getId()})}" th:object="${storage}">
+    <input type="submit" value="Delete">
+</form>
+</br>
+<form th:method="GET" th:action="@{/storages/}">
+    <input type="submit" value="Go to storages">
+</form>
+</body>
+</html>

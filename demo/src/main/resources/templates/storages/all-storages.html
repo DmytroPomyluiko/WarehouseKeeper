@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>All storages</title>
+</head>
+<body>
+<div align="center">
+    <h3>All storages</h3>
+    <div>
+        <table border="1" cellpadding="3">
+            <tr>
+                <th >Size m²</th>
+                <th >Row</th>
+                <th >Number</th>
+                <th >Reserved</th>
+                <th>Owner</th>
+                <th>Actions</th>
+                <th>Link--></th>
+            </tr>
+
+            <tr th:each="storage : ${storages}">
+                <td align="center" th:utext="${storage.getSize()}">Size</td>
+                <td align="center" th:utext="${storage.getRow()}">Row</td>
+                <td align="center" th:utext="${storage.getNumber()}">Number</td>
+                <td align="center" th:utext="${storage.getTakenAt()} "
+                    th:style="${storage.isExpired()} ? 'color: red' : 'color: black'">Reserved</td>
+                <td align="center" >
+                    <div th:if="${storage.getOwner()}">
+                        <span>Reserved by: </span> <span th:text="${storage.getOwner().getFullName()}">Customer</span>
+                    </div>
+                </td>
+                <td align="center" >
+                    <form th:method="GET" th:action="@{/storages/{id}/edit(id=${storage.getId()})}" th:object="${storage}">
+                        <input type="submit" value="Update">
+                    </form>
+                    &nbsp;&nbsp;&nbsp;
+                    <form th:method="DELETE" th:action="@{/storages/{id}(id=${storage.getId()})}" th:object="${storage}">
+                        <input type="submit" value="Delete">
+                    </form>
+                </td>
+                <td align="center" ><a th:href="@{/storages/{id}(id=${storage.getId()})}">Link</a></td>
+            </tr>
+
+        </table>
+    </div>
+    <div>&nbsp;</div>
+    <div>
+        Total storages: [[${totalStorages}]] - Page [[${currentPage}]] of [[${totalPages}]]
+        &nbsp; - &nbsp;
+
+        <span th:each="e : ${#numbers.sequence(1, totalPages)}">
+    <a th:if="${e != currentPage}" th:href="@{'/storages/page/' + ${e}}">[[${e}]]</a> &nbsp;&nbsp;
+    <span th:unless="${e != currentPage}" >[[${e}]]</span> &nbsp;&nbsp;
+  </span>
+    </div>
+
+    </br>
+    <form th:method="GET" th:action="@{/storages/new}" th:object="${storage}">
+        <input type="submit" value="Create new storage">
+    </form>
+    </br>
+    <form th:method="GET" th:action="@{/customers/}">
+        <input type="submit" value="Go to customers">
+    </form>
+</div>
+</body>
+</html>

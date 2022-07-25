@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update</title>
+</head>
+<body>
+<form th:method="PATCH" th:action="@{/storages/{id}(id=${storage.getId()})}" th:object="${storage}">
+    <label for="row">Row of storage</label>
+    <input type="text" th:field="*{row}" id="row">
+    <div style="color: red" th:if="${#fields.hasErrors('row')}" th:errors="*{row}"></div>
+    </br>
+    <label for="number">Number of storage</label>
+    <input type="text" th:field="*{number}" id="number">
+    <div style="color: red" th:if="${#fields.hasErrors('number')}" th:errors="*{number}"></div>
+    </br>
+    <label for="size">Size of storage</label>
+    <input type="text" th:field="*{size}" id="size">
+    <div style="color: red" th:if="${#fields.hasErrors('size')}" th:errors="*{size}"></div>
+    </br>
+    <input type="submit" value="Update!">
+</form>
+</body>
+</html>

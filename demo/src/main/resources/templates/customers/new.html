@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Creator</title>
+</head>
+<body>
+<form th:method="post" th:action="@{/customers}" th:object="${customer}">
+    <label for="fullName">Write full name here</label>
+    <input type="text" th:field="*{fullName}" id="fullName"/>
+    <div style="color: red" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+    </br>
+    <label for="yearOfBirth">Write year of birth here</label>
+    <input type="text" th:field="*{yearOfBirth}" id="yearOfBirth"/>
+    <div style="color: red" th:if="${#fields.hasErrors('yearOfBirth')}" th:errors="*{yearOfBirth}"></div>
+    </br>
+    <label for="phoneNumber">Write phone number here</label>
+    <input type="text" th:field="*{phoneNumber}" id="phoneNumber"/>
+    <div style="color: red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+    </br>
+    <label for="email">Write email here</label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color: red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </br>
+    <input type="submit" value="Create!"/>
+</form>
+</body>
+</html>

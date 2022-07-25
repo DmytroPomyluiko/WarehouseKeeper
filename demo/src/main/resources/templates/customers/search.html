@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Search</title>
+</head>
+<body>
+<form th:method="POST" th:action="@{/customers/search}">
+    <label for="query">Enter name of customer: </label>
+    <input type="text" id="query" name="query"/>
+    <br/>
+    <input type="submit" value="Search!"/>
+</form>
+
+<div th:if="${customers}">
+    <div th:if="${customers.isEmpty()}">
+        <span>This name not found</span>
+    </div>
+
+    <div th:each="customer : ${customers}">
+        <a th:href="@{/customers/{id}(id=${customer.getId()})}" th:text="${customer.getFullName() +
+        ' - mob. ' + customer.getPhoneNumber()}">customer</a>
+        </div>
+
+        <hr/>
+</div>
+</br>
+<form th:method="GET" th:action="@{/customers/}">
+    <input type="submit" value="Back to customers">
+</form>
+
+</body>
+</html>

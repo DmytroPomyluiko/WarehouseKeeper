@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer</title>
+</head>
+<body>
+<p th:text="${customer.getId() + ' - ' + customer.getFullName() + ', ' + customer.getYearOfBirth() + ', mob. '
++ customer.getPhoneNumber() + ', ' + customer.getEmail()}">VALUE</p>
+
+    <table border="1">
+        <tr>
+            <th>Size m²</th>
+            <th>Row</th>
+            <th>Number</th>
+            <th>Reserved</th>
+            <th>Link--></th>
+        </tr>
+
+        <tr th:each="storage : ${storages}">
+            <td th:utext="${storage.getSize()}">Size</td>
+            <td th:utext="${storage.getRow()}">Row</td>
+            <td th:utext="${storage.getNumber()}">Number</td>
+            <td th:utext="${storage.getTakenAt()} "
+                th:style="${storage.isExpired()} ? 'color: red' : 'color: black'">Reserved</td>
+            <td><a th:href="@{/storages/{id}(id=${storage.getId()})}">Link</a></td>
+        </tr>
+
+    </table>
+<p>* Red color (Reserved) means that storage is reserving more than 1 month</p>
+
+</br>
+<form th:method="GET" th:action="@{/customers/{id}/edit(id=${customer.getId()})}">
+    <input type="submit" value="Update">
+</form>
+</br>
+<form th:method="DELETE" th:action="@{/customers/{id}(id=${customer.getId()})}">
+    <input type="submit" value="Delete">
+</form>
+</br>
+<form th:method="GET" th:action="@{/customers/}">
+    <input type="submit" value="Go to customers">
+</form>
+</body>
+</html>
