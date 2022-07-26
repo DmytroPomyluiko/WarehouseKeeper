@@ -5,6 +5,11 @@
     <title>All storages</title>
 </head>
 <body>
+<div align="right">
+    <form th:method="Post" th:action="@{/logout}">
+        <input type="submit" value="Logout">
+    </form>
+</div>
 <div align="center">
     <h3>All storages</h3>
     <div>
@@ -27,7 +32,10 @@
                     th:style="${storage.isExpired()} ? 'color: red' : 'color: black'">Reserved</td>
                 <td align="center" >
                     <div th:if="${storage.getOwner()}">
-                        <span>Reserved by: </span> <span th:text="${storage.getOwner().getFullName()}">Customer</span>
+                        <a th:href="@{/customers/{id}(id=${storage.getOwner().getId()})}">
+                            [[${storage.getOwner().getFullName()}]]</a>
+                        </br>
+                        <span th:utext="${'0' + storage.getOwner().getPhoneNumber()}"></span>
                     </div>
                 </td>
                 <td align="center" >

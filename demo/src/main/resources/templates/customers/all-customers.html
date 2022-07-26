@@ -5,6 +5,11 @@
     <title>All customers</title>
 </head>
 <body>
+<div align="right">
+    <form th:method="GET" th:action="@{/logout}">
+        <input type="submit" value="Logout">
+    </form>
+</div>
 <div align="center">
     <h2>All customers</h2>
     <div th:each="customer : ${customers}">
