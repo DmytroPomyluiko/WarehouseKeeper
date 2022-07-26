@@ -11,6 +11,7 @@
     <input type="text" th:field="*{username}" id="username">
     <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Errors in user field</div>
     </br>
+    </br>
     <label for="password">Insert your password</label>
     <input type="password" th:field="*{password}" id="password">
     <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Errors in password field</div>

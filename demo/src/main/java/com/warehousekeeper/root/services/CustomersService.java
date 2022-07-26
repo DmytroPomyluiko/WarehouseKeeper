@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,12 +50,14 @@ public class CustomersService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(int id, Customer updateCustomer){
         updateCustomer.setId(id);
         customersRepository.save(updateCustomer);
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id){
         customersRepository.deleteById(id);
     }

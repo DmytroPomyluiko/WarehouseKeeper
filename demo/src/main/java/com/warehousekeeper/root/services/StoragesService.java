@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,6 +59,7 @@ public class StoragesService {
     }
 
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMINE')")
     public void update(int id, Storage storageToUpdate){
         Storage storageToBeUpdated = storagesRepository.findById(id).get();
 
@@ -67,6 +69,7 @@ public class StoragesService {
         storagesRepository.save(storageToUpdate);
     }
     @Transactional
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id) {
         storagesRepository.deleteById(id);
     }

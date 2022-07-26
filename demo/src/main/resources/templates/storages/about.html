@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>About</title>
+</head>
+<body>
+<div align="right">
+    <form th:method="Post" th:action="@{/logout}">
+        <input type="submit" value="Logout">
+    </form>
+</div>
+<p>Info about us</p>
+<form th:method="GET" th:action="@{/customers/}">
+    <input type="submit" value="Go to customers">
+</form>
+</br>
+<form th:method="GET" th:action="@{/storages/}">
+    <input type="submit" value="Go to storages">
+</form>
+</body>
+</html>

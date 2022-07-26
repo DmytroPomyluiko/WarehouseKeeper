@@ -51,19 +51,6 @@ public class StorageController {
         return "storages/all-storages";
     }
 
-/*    @GetMapping()
-    public String showAllStorages(Model model, @RequestParam(value = "page", required = false) Integer page,
-                                  @RequestParam(value = "storages_per_page", required = false) Integer storagePerPage,
-                                  @RequestParam(value = "sort_by_size", required = false) boolean sortBySize){
-
-        if (page == null || storagePerPage == null)
-            model.addAttribute("storages", storagesService.findAll(sortBySize)); // выдача всех книг
-        else
-            model.addAttribute("storages", storagesService.findStoragesWithPagination
-                    (page, storagePerPage, sortBySize));
-        return "storages/all-storages";
-    }*/
-
     @GetMapping("/{id}")
     public String findStorageById(@PathVariable("id") int id, Model model, @ModelAttribute("customer") Customer customer){
         model.addAttribute("storage", storagesService.findStorage(id));
@@ -125,5 +112,10 @@ public class StorageController {
         storagesService.release(id);
         return "redirect:/storages/" + id;
 
+    }
+
+    @GetMapping("/about")
+    public String about(){
+        return "storages/about";
     }
 }
