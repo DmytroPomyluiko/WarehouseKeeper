@@ -9,8 +9,14 @@
     <form th:method="Post" th:action="@{/logout}">
         <input type="submit" value="Logout">
     </form>
+    </br>
+    <form th:method="GET" th:action="@{/auth/registration}">
+        <input type="submit" value="Sign up!">
+    </form>
+
 </div>
 <p>Info about us</p>
+</br>
 <form th:method="GET" th:action="@{/customers/}">
     <input type="submit" value="Go to customers">
 </form>
