@@ -75,16 +75,12 @@ public class CustomersService {
 
         if (customer.isPresent()) {
             Hibernate.initialize(customer.get().getStorages());
-            // Мы внизу итерируемся по книгам, поэтому они точно будут загружены, но на всякий случай
-            // не мешает всегда вызывать Hibernate.initialize()
-            // (на случай, например, если код в дальнейшем поменяется и итерация по книгам удалится)
 
-            // Проверка просроченности книг
             customer.get().getStorages().forEach(storage -> {
                 long diffInMillies = Math.abs(storage.getTakenAt().getTime() - new Date().getTime());
-                // 864000000 милисекунд = 10 суток
+                // 10 days
                 if (diffInMillies > 864000000)
-                    storage.setExpired(true); // книга просрочена
+                    storage.setExpired(true);
             });
 
             return customer.get().getStorages();
