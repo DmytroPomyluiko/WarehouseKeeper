@@ -12,13 +12,13 @@ import java.util.List;
 /**
  * @author Dmytro
  * @version 1.0
- * This class used as entity of table of DB. It describes all customers of Storage
+ * This class uses as entity of table of DB. It describes all customers of Storage
  */
 @Entity
 @Table(name = "Customer")
 public class Customer {
     /**
-     * This is int field of DB where store id
+     * This is int field  where store id
      */
     @Id
     @Column(name = "id")

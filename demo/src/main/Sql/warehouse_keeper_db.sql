@@ -24,3 +24,5 @@ create table person(
     password varchar      not null,
     role     varchar(100) not null
 );
+
+insert into person(username, password, role) values ('admin', 12345,'ADMIN');
