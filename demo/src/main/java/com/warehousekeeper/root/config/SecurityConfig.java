@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/storages/about").permitAll()
                 .antMatchers("/auth/login", "/error", "/auth/registration","/about").permitAll()
-                .anyRequest().hasRole("ADMIN")
+                .anyRequest().permitAll()
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
@@ -41,6 +41,24 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutSuccessUrl("/auth/login");
 
     }
+
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception{
+//        http.authorizeRequests()
+//                .antMatchers("/storages/about").permitAll()
+//                .antMatchers("/auth/login", "/error", "/auth/registration","/about").permitAll()
+//                .anyRequest().hasRole("ADMIN")
+//                .and()
+//                .formLogin().loginPage("/auth/login")
+//                .loginProcessingUrl("/process_login")
+//                .defaultSuccessUrl("/storages/about", true)
+//                .failureUrl("/auth/login?error")
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/auth/login");
+//
+//    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

@@ -1,5 +1,7 @@
 package com.warehousekeeper.root.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -42,6 +44,7 @@ public class Storage {
      */
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JsonBackReference
     private Customer owner;
 
     @Column(name = "taken_at")
