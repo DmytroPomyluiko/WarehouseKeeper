@@ -19,7 +19,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class CustomersService {
 
     private final CustomersRepository customersRepository;
@@ -33,15 +32,16 @@ public class CustomersService {
         Pageable pageable = PageRequest.of(pageNumber - 1,5, Sort.by("fullName"));
         return customersRepository.findAll(pageable);
     }
+    @Transactional(readOnly = true)
     public List<Customer> findAll(){
         return customersRepository.findAll();
     }
 
 
-
+    @Transactional(readOnly = true)
     public Customer findById(int id){
-        Optional<Customer> foundCustomer = customersRepository.findById(id);
-        return foundCustomer.orElse(null);
+        Customer customer = customersRepository.findById(id).orElseThrow(null);
+        return customer;
     }
 
     @Transactional
@@ -50,14 +50,14 @@ public class CustomersService {
     }
 
     @Transactional
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(int id, Customer updateCustomer){
         updateCustomer.setId(id);
         customersRepository.save(updateCustomer);
     }
 
     @Transactional
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    // @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id){
         customersRepository.deleteById(id);
     }
@@ -69,7 +69,7 @@ public class CustomersService {
     public List<Customer> searchByName(String query){
         return customersRepository.findByFullNameStartingWith(query);
     }
-
+    @Transactional
     public List<Storage> getStoragesByPersonId(int id) {
         Optional<Customer> customer = customersRepository.findById(id);
 

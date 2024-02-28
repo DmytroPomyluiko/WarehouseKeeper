@@ -3,13 +3,13 @@ package com.warehousekeeper.root.dao;
 import com.warehousekeeper.root.models.Customer;
 import com.warehousekeeper.root.util.CustomerNotFoundException;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CustomerDao {
@@ -38,4 +38,38 @@ public class CustomerDao {
             throw new CustomerNotFoundException();
         }
     }
+//    @Transactional(readOnly = true)
+//    public List<Customer> findByFullName(String query){
+//        Session session = entityManager.unwrap(Session.class);
+//            List<Customer> customers = session.createQuery("SELECT c FROM Customer c LEFT JOIN FETCH c.storages WHERE c.fullName="+ query,
+//                    Customer.class).getResultList();
+//            return customers;
+//    }
+//    @Transactional(readOnly = true)
+//    public List<Customer> findByFullName(String name){
+//        Session session = entityManager.unwrap(Session.class);
+//        Query<Customer> query = session.createQuery("SELECT c FROM Customer c LEFT JOIN FETCH c.storages WHERE c.fullName = :fullName", Customer.class);
+//        query.setParameter("fullName", name);
+//        List<Customer> customers = query.getResultList();
+//        return customers;
+//    }
+//    @Transactional(readOnly = true)
+//    public List<Customer> findByFirstTwoLetters(String letters){
+//        Session session = entityManager.unwrap(Session.class);
+//        Query<Customer> query = session.createQuery("SELECT c FROM Customer c LEFT JOIN FETCH c.storages WHERE c.fullName LIKE :letters", Customer.class);
+//        query.setParameter("letters", letters + "%");
+//        List<Customer> customers = query.getResultList();
+//        return customers;
+//    }
+    @Transactional(readOnly = true)
+    public List<Customer> findByFirstTwoLettersIgnoreCase(String letters){
+        Session session = entityManager.unwrap(Session.class);
+        Query<Customer> query = session.createQuery("SELECT c FROM Customer c LEFT JOIN FETCH c.storages WHERE lower(c.fullName) LIKE lower(:letters)", Customer.class);
+        query.setParameter("letters", letters + "%");
+        List<Customer> customers = query.getResultList();
+        return customers;
+    }
+
+
+
 }

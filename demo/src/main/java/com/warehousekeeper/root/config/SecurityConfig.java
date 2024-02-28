@@ -25,22 +25,29 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     //Spring Security configuration.
     //Configure authorisation
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
-        http.authorizeRequests()
-                .antMatchers("/storages/about").permitAll()
-                .antMatchers("/auth/login", "/error", "/auth/registration","/about").permitAll()
-                .anyRequest().permitAll()
-                .and()
-                .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/storages/about", true)
-                .failureUrl("/auth/login?error")
-                .and()
-                .logout()
-                .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login");
-
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .cors().disable()
+                .csrf().disable().
+        authorizeRequests().anyRequest().permitAll();
     }
+//    @Override
+//    protected void configure(HttpSecurity http) throws Exception{
+//        http.authorizeRequests()
+//                .antMatchers("/storages/about").permitAll()
+//                .antMatchers("/auth/login", "/error", "/auth/registration","/about").permitAll()
+//                .anyRequest().permitAll()
+//                .and()
+//                .formLogin().loginPage("/auth/login")
+//                .loginProcessingUrl("/process_login")
+//                .defaultSuccessUrl("/storages/about", true)
+//                .failureUrl("/auth/login?error")
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout")
+//                .logoutSuccessUrl("/auth/login");
+//
+//    }
 
 //    @Override
 //    protected void configure(HttpSecurity http) throws Exception{
