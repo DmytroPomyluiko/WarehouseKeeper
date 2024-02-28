@@ -3,6 +3,7 @@ package com.warehousekeeper.root.services;
 import com.warehousekeeper.root.models.Customer;
 import com.warehousekeeper.root.models.Storage;
 import com.warehousekeeper.root.repositories.StoragesRepository;
+import com.warehousekeeper.root.util.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,7 +18,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-@Transactional(readOnly = true)
 public class StoragesService {
 
     private final StoragesRepository storagesRepository;
@@ -33,12 +33,9 @@ public class StoragesService {
         return storagesRepository.findAll(pageable);
     }
 
-    public List<Storage> findAll(boolean sortBySize){
-        if(sortBySize){
-            storagesRepository.findAll(Sort.by("size"));
-        }
-            return storagesRepository.findAll();
-        }
+    public List<Storage> findAll() {
+        return storagesRepository.findAll(Sort.by("size"));
+    }
 
 
     public List<Storage> findStoragesWithPagination(Integer page, Integer storagesPerPage, boolean sortBySize){
@@ -51,7 +48,7 @@ public class StoragesService {
 
     public Storage findStorage(int id){
         Optional<Storage> foundStorage = storagesRepository.findById(id);
-        return foundStorage.orElse(null);
+        return foundStorage.orElseThrow(NotFoundException::new);
     }
     @Transactional
     public void createNewStorage(Storage storage) {
@@ -59,7 +56,7 @@ public class StoragesService {
     }
 
     @Transactional
-    @PreAuthorize("hasRole('ROLE_ADMINE')")
+ //   @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(int id, Storage storageToUpdate){
         Storage storageToBeUpdated = storagesRepository.findById(id).get();
 
@@ -69,11 +66,11 @@ public class StoragesService {
         storagesRepository.save(storageToUpdate);
     }
     @Transactional
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id) {
         storagesRepository.deleteById(id);
     }
-
+    @Transactional
     public Customer getStorageOwner(int id){
         return storagesRepository.findById(id).map(Storage::getOwner).orElse(null);
     }

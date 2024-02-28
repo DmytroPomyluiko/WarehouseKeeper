@@ -1,7 +1,7 @@
 package com.warehousekeeper.root.controllers;
 
+import com.warehousekeeper.root.dao.CustomerDao;
 import com.warehousekeeper.root.models.Customer;
-import com.warehousekeeper.root.models.Storage;
 import com.warehousekeeper.root.services.CustomersService;
 import com.warehousekeeper.root.services.StoragesService;
 import com.warehousekeeper.root.util.CustomerValidator;
@@ -22,12 +22,14 @@ public class CustomerController {
     private final CustomersService customersService;
     private final CustomerValidator customerValidator;
     private final StoragesService storagesService;
+    private final CustomerDao customerDao;
     @Autowired
     public CustomerController(CustomersService customersService, CustomerValidator customerValidator,
-                              StoragesService storagesService) {
+                              StoragesService storagesService, CustomerDao customerDao) {
         this.customersService = customersService;
         this.customerValidator = customerValidator;
         this.storagesService = storagesService;
+        this.customerDao = customerDao;
     }
 
     @GetMapping("")
@@ -114,7 +116,7 @@ public class CustomerController {
 
     @PostMapping("/search")
     public String makeSearch(Model model, @RequestParam("query") String query) {
-        model.addAttribute("customers", customersService.searchByName(query));
+        model.addAttribute("customers", customerDao.findByFirstTwoLettersIgnoreCase(query));
         return "customers/search";
     }
 

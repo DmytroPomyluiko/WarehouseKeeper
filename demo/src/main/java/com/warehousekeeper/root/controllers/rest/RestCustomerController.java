@@ -5,9 +5,9 @@ import com.warehousekeeper.root.dto.CustomerDto;
 import com.warehousekeeper.root.models.Customer;
 import com.warehousekeeper.root.services.CustomersService;
 import com.warehousekeeper.root.services.StoragesService;
-import com.warehousekeeper.root.util.CustomerErrorResponse;
-import com.warehousekeeper.root.util.CustomerNotCreatedException;
-import com.warehousekeeper.root.util.CustomerNotFoundException;
+import com.warehousekeeper.root.util.ErrorResponse;
+import com.warehousekeeper.root.util.NotCreatedException;
+import com.warehousekeeper.root.util.NotFoundException;
 import com.warehousekeeper.root.util.CustomerValidator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/customers")
@@ -58,7 +57,7 @@ public class RestCustomerController {
     public ResponseEntity<HttpStatus> create(@RequestBody @Valid CustomerDto customerDto, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             StringBuilder stringBuilder = getExceptionMessage(bindingResult);
-            throw new CustomerNotCreatedException(stringBuilder.toString());
+            throw new NotCreatedException(stringBuilder.toString());
         }
         customersService.createNewCustomer(convertToPerson(customerDto));
         return ResponseEntity.ok(HttpStatus.CREATED);
@@ -71,42 +70,42 @@ public class RestCustomerController {
         customerValidator.validate(convertToPerson(customerDto), bindingResult);
         if (bindingResult.hasErrors()) {
             StringBuilder stringBuilder = getExceptionMessage(bindingResult);
-            throw new CustomerNotCreatedException(stringBuilder.toString());
+            throw new NotCreatedException(stringBuilder.toString());
         }
 
         customersService.update(id,convertToPerson(customerDto));
         return ResponseEntity.ok(HttpStatus.OK);
     }
 
-    @ExceptionHandler
-    private ResponseEntity<CustomerErrorResponse> handlerExceptionNotCreatedCustomer(CustomerNotCreatedException e) {
-        CustomerErrorResponse personErrorResponse =
-                new CustomerErrorResponse(e.getMessage(), new Date());
-        return new ResponseEntity<>(personErrorResponse, HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler
-    private ResponseEntity<CustomerErrorResponse> handlerExceptionNotFoundCustomer(CustomerNotFoundException e) {
-        CustomerErrorResponse personErrorResponse =
-                new CustomerErrorResponse("Customer with this id/name was not found", new Date());
-        return new ResponseEntity<>(personErrorResponse, HttpStatus.NOT_FOUND);
-    }
-
-
     @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> delete(@PathVariable("id") int id){
         customersService.delete(id);
         return ResponseEntity.ok(HttpStatus.OK);
     }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handlerExceptionNotCreatedCustomer(NotCreatedException e) {
+        ErrorResponse personErrorResponse =
+                new ErrorResponse(e.getMessage(), new Date());
+        return new ResponseEntity<>(personErrorResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
+    private ResponseEntity<ErrorResponse> handlerExceptionNotFoundCustomer(NotFoundException e) {
+        ErrorResponse personErrorResponse =
+                new ErrorResponse("Customer with this id/name was not found", new Date());
+        return new ResponseEntity<>(personErrorResponse, HttpStatus.NOT_FOUND);
+    }
+
     @PostMapping ("/search")
     public ResponseEntity<List<Customer>> makeSearch(@RequestParam("query") String query) {
         List<Customer> customers = customerDao.findByFirstTwoLettersIgnoreCase(query);
         if (customers.size() == 0)
-            throw new CustomerNotFoundException();
+            throw new NotFoundException();
 
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
-    private static StringBuilder getExceptionMessage(BindingResult bindingResult) {
+    protected static StringBuilder getExceptionMessage(BindingResult bindingResult) {
         StringBuilder stringBuilder = new StringBuilder();
         List<FieldError> errors = bindingResult.getFieldErrors();
         for (FieldError fr : errors) {
