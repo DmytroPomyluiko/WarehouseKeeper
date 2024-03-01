@@ -50,14 +50,14 @@ public class CustomersService {
     }
 
     @Transactional
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(int id, Customer updateCustomer){
         updateCustomer.setId(id);
         customersRepository.save(updateCustomer);
     }
 
     @Transactional
-    // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id){
         customersRepository.deleteById(id);
     }

@@ -14,34 +14,24 @@ import java.util.Date;
 @Entity
 @Table(name = "Storage")
 public class Storage {
-    /**
-     * This is int field of DB where store id
-     */
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    /**
-     * This is String field where store row
-     */
+
     @Column(name = "row")
     @NotEmpty(message = "Row should not be empty")
     private String row;
-    /**
-     * This is int field where store number of storage
-     */
+
     @Column(name = "number")
     @NotNull(message = "Number should not be empty")
     private int number;
-    /**
-     * This is int field where store size
-     */
+
     @Column(name = "size")
     @NotNull(message = "Size should not be empty")
     private int size;
-    /**
-     * This is @param Customer field  where store owner of storage
-     */
+
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     @JsonBackReference

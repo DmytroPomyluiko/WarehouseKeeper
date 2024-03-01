@@ -15,7 +15,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-
+/**
+ * @author Dmytro
+ * @version 1.0
+ * Controller responsible for CRUD operations with Storage entity
+ */
 @Controller
 @RequestMapping("/storages")
 public class StorageController {
@@ -33,7 +37,11 @@ public class StorageController {
     public String showAllStoragesTest(Model model){
         return listByPage(model, 1);
     }
-
+    /**
+     * Returns all existing storage
+     *
+     * @return html page of list of storage and customer using pagenation
+     */
     @GetMapping("/page/{pageNumber}")
     public String listByPage(Model model, @PathVariable ("pageNumber") int currentPage){
 
@@ -50,7 +58,11 @@ public class StorageController {
 
         return "storages/all-storages";
     }
-
+    /**
+     * Returns storage by id
+     *
+     * @return html page of storage by id
+     */
     @GetMapping("/{id}")
     public String findStorageById(@PathVariable("id") int id, Model model, @ModelAttribute("customer") Customer customer){
         model.addAttribute("storage", storagesService.findStorage(id));
@@ -70,7 +82,11 @@ public class StorageController {
     public String addNewStorage(@ModelAttribute("storage") Storage storage){
         return "storages/new";
     }
-
+    /**
+     * Create new storage
+     *
+     * @return html page with all storages
+     */
     @PostMapping()
     public String create(@ModelAttribute ("storage") @Valid Storage storage, BindingResult bindingResult){
         if(bindingResult.hasErrors()){
@@ -85,7 +101,11 @@ public class StorageController {
         model.addAttribute("storage", storagesService.findStorage(id));
         return "storages/edit";
     }
-
+    /**
+     * Edit storage by id
+     *
+     * @return html page with all storages
+     */
     @PatchMapping("/{id}")
     public String update(@PathVariable("id") int id, @ModelAttribute("storage") @Valid Storage storage,
                          BindingResult bindingResult){
@@ -94,18 +114,31 @@ public class StorageController {
         storagesService.update(id, storage);
         return "redirect:/storages";
     }
-
+    /**
+     * Delete storage by id
+     *
+     * @return html page with all storages
+     */
     @DeleteMapping("/{id}")
     public String delete(@PathVariable("id") int id){
         storagesService.delete(id);
         return "redirect:/storages";
     }
-
+    /**
+     * Assign customer for storage place
+     *
+     * @return html page with all storages
+     */
     @PatchMapping("/{id}/assign")
     public String assign(@PathVariable ("id") int id, @ModelAttribute("customer") Customer selectedCustomer){
         storagesService.assign(id, selectedCustomer);
         return "redirect:/storages/" + id;
     }
+    /**
+     * Release customer for storage place
+     *
+     * @return html page with all storages
+     */
 
     @PatchMapping("/{id}/release")
     public String release(@PathVariable ("id") int id){
