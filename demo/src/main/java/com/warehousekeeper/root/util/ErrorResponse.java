@@ -20,4 +20,9 @@ public class ErrorResponse {
     public void setDate(Date date) {
         this.date = (Date) date.clone();
     }
+
+    public ErrorResponse(String message) {
+        this.message = message;
+    }
+
 }

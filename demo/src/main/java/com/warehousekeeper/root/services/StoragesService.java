@@ -56,7 +56,7 @@ public class StoragesService {
     }
 
     @Transactional
- //   @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void update(int id, Storage storageToUpdate){
         Storage storageToBeUpdated = storagesRepository.findById(id).get();
 
@@ -66,7 +66,7 @@ public class StoragesService {
         storagesRepository.save(storageToUpdate);
     }
     @Transactional
-//    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void delete(int id) {
         storagesRepository.deleteById(id);
     }
