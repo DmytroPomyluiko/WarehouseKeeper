@@ -48,7 +48,7 @@ POST: /login - all
 * Java version 17
 * Spring boot(Spring web, security)
 * Hibernate
-* PostgresSQL
+* PostgresQL
 * Maven
 * Maven Checkstyle Plugin
 
@@ -66,8 +66,8 @@ Table relations
 
 <a name="Application-startup"></a>
 ## Application startup
-1. Install Postgres
+1. Install Postgres and creat db with sql in folder "Sql" warehouse_keeper_db.sql
 1. Load dependencies which are described in `pom.xml`
-1. Change `username`, `password`, and `URL` values in the `resources/db.properties` file to open a connection with your database
+1. Change `username`, `password`, and `URL` values in the `resources/application.properties` file to open a connection with your database
 1. Launch the application and start using it at `http://localhost:%your_port%`
 
